@@ -2515,6 +2515,32 @@ static enum hrtimer_restart ufshcd_clkgate_hrtimer_handler(
 				&hba->clk_gating.gate_work);
 
 	return HRTIMER_NORESTART;
+static void ufshcd_init_clk_scaling(struct ufs_hba *hba)
+{
+	char wq_name[sizeof("ufs_clkscaling_00")];
+
+	if (!ufshcd_is_clkscaling_supported(hba))
+		return;
+
+	INIT_WORK(&hba->clk_scaling.suspend_work,
+		  ufshcd_clk_scaling_suspend_work);
+	INIT_WORK(&hba->clk_scaling.resume_work,
+		  ufshcd_clk_scaling_resume_work);
+
+	snprintf(wq_name, sizeof(wq_name), "ufs_clkscaling_%d",
+		 hba->host->host_no);
+	hba->clk_scaling.workq = create_singlethread_workqueue(wq_name);
+
+	ufshcd_clkscaling_init_sysfs(hba);
+}
+
+static void ufshcd_exit_clk_scaling(struct ufs_hba *hba)
+{
+	if (!ufshcd_is_clkscaling_supported(hba))
+		return;
+
+	destroy_workqueue(hba->clk_scaling.workq);
+	ufshcd_devfreq_remove(hba);
 }
 
 static void ufshcd_init_clk_gating(struct ufs_hba *hba)
@@ -9267,10 +9293,16 @@ out:
 	 */
 	if (ret && !ufshcd_eh_in_progress(hba) && !hba->pm_op_in_progress)
 		pm_runtime_put_sync(hba->dev);
+<<<<<<< HEAD
 
 #if defined(CONFIG_UFSFEATURE)
 	ufsf_reset(&hba->ufsf);
 #endif
+=======
+		ufshcd_exit_clk_scaling(hba);
+		ufshcd_hba_exit(hba);
+	}
+>>>>>>> 0592c2178e3c (scsi: ufshcd: Fix NULL pointer dereference for in ufshcd_init)
 
 	trace_ufshcd_init(dev_name(hba->dev), ret,
 		ktime_to_us(ktime_sub(ktime_get(), start)),
@@ -10111,6 +10143,7 @@ static void ufshcd_hba_exit(struct ufs_hba *hba)
 	if (hba->is_powered) {
 		ufshcd_variant_hba_exit(hba);
 		ufshcd_setup_vreg(hba, false);
+<<<<<<< HEAD
 		if (ufshcd_is_clkscaling_supported(hba)) {
 			if (hba->devfreq)
 				ufshcd_suspend_clkscaling(hba);
@@ -10122,6 +10155,13 @@ static void ufshcd_hba_exit(struct ufs_hba *hba)
 		if (hba->recovery_wq)
 			destroy_workqueue(hba->recovery_wq);
 		ufshcd_disable_clocks(hba, false);
+=======
+		ufshcd_suspend_clkscaling(hba);
+		if (ufshcd_is_clkscaling_supported(hba))
+			if (hba->devfreq)
+				ufshcd_suspend_clkscaling(hba);
+		ufshcd_setup_clocks(hba, false);
+>>>>>>> 0592c2178e3c (scsi: ufshcd: Fix NULL pointer dereference for in ufshcd_init)
 		ufshcd_setup_hba_vreg(hba, false);
 		hba->is_powered = false;
 	}
@@ -10960,6 +11000,7 @@ void ufshcd_remove(struct ufs_hba *hba)
 	ufshcd_disable_intr(hba, hba->intr_mask);
 	ufshcd_hba_stop(hba, true);
 
+	ufshcd_exit_clk_scaling(hba);
 	ufshcd_exit_clk_gating(hba);
 	ufshcd_exit_hibern8_on_idle(hba);
 	if (ufshcd_is_clkscaling_supported(hba)) {
@@ -11156,6 +11197,8 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	ufshcd_init_clk_gating(hba);
 	ufshcd_init_hibern8(hba);
 
+	ufshcd_init_clk_scaling(hba);
+
 	/*
 	 * In order to avoid any spurious interrupt immediately after
 	 * registering UFS controller interrupt handler, clear any pending UFS
@@ -11207,21 +11250,6 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 		goto out_remove_scsi_host;
 	}
 
-	if (ufshcd_is_clkscaling_supported(hba)) {
-		char wq_name[sizeof("ufs_clkscaling_00")];
-
-		INIT_WORK(&hba->clk_scaling.suspend_work,
-			  ufshcd_clk_scaling_suspend_work);
-		INIT_WORK(&hba->clk_scaling.resume_work,
-			  ufshcd_clk_scaling_resume_work);
-
-		snprintf(wq_name, sizeof(wq_name), "ufs_clkscaling_%d",
-			 host->host_no);
-		hba->clk_scaling.workq = create_singlethread_workqueue(wq_name);
-
-		ufshcd_clkscaling_init_sysfs(hba);
-	}
-
 	/*
 	 * If rpm_lvl and and spm_lvl are not already set to valid levels,
 	 * set the default power management level for UFS runtime and system
@@ -11265,6 +11293,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 out_remove_scsi_host:
 	scsi_remove_host(hba->host);
 exit_gating:
+	ufshcd_exit_clk_scaling(hba);
 	ufshcd_exit_clk_gating(hba);
 out_disable:
 	hba->is_irq_enabled = false;
