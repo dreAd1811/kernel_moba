@@ -266,6 +266,32 @@ static int unimac_mdio_remove(struct platform_device *pdev)
 	return 0;
 }
 
+static int __maybe_unused unimac_mdio_suspend(struct device *d)
+{
+	struct unimac_mdio_priv *priv = dev_get_drvdata(d);
+
+	clk_disable_unprepare(priv->clk);
+
+	return 0;
+}
+
+static int __maybe_unused unimac_mdio_resume(struct device *d)
+{
+	struct unimac_mdio_priv *priv = dev_get_drvdata(d);
+	int ret;
+
+	ret = clk_prepare_enable(priv->clk);
+	if (ret)
+		return ret;
+
+	unimac_mdio_clk_set(priv);
+
+	return 0;
+}
+
+static SIMPLE_DEV_PM_OPS(unimac_mdio_pm_ops,
+			 unimac_mdio_suspend, unimac_mdio_resume);
+
 static const struct of_device_id unimac_mdio_ids[] = {
 	{ .compatible = "brcm,genet-mdio-v5", },
 	{ .compatible = "brcm,genet-mdio-v4", },
