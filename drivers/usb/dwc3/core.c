@@ -1567,6 +1567,11 @@ skip_clk_reset:
 			dev_err(dwc->dev, "gadget init failed %d\n", ret);
 			goto err3;
 		}
+	ret = dwc3_core_init(dwc);
+	if (ret) {
+		if (ret != -EPROBE_DEFER)
+			dev_err(dev, "failed to initialize core: %d\n", ret);
+		goto err4;
 	}
 
 	dwc->dwc_ipc_log_ctxt = ipc_log_context_create(NUM_LOG_PAGES,
