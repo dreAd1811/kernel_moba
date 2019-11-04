@@ -198,6 +198,7 @@ static inline int cpuhp_smt_enable(void) { return 0; }
 static inline int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval) { return 0; }
 #endif
 
+<<<<<<< HEAD
 #define IDLE_START 1
 #define IDLE_END 2
 
@@ -228,5 +229,9 @@ static inline bool cpu_mitigations_auto_nosmt(void)
 {
 	return cpu_mitigations == CPU_MITIGATIONS_AUTO_NOSMT;
 }
+=======
+extern bool cpu_mitigations_off(void);
+extern bool cpu_mitigations_auto_nosmt(void);
+>>>>>>> db5ae6596ae2 (cpu/speculation: Uninline and export CPU mitigations helpers)
 
 #endif /* _LINUX_CPU_H_ */
