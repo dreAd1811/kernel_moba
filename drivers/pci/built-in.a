@@ -1,0 +1,60 @@
+!<thin>
+//                                              380       `
+access.o/
+bus.o/
+probe.o/
+host-bridge.o/
+remove.o/
+pci.o/
+pci-driver.o/
+search.o/
+pci-sysfs.o/
+rom.o/
+setup-res.o/
+irq.o/
+vpd.o/
+setup-bus.o/
+vc.o/
+mmap.o/
+setup-irq.o/
+proc.o/
+slot.o/
+of.o/
+quirks.o/
+msi.o/
+syscall.o/
+controller/pci-msm.o/
+controller/pci-msm-msi.o/
+controller/dwc/pcie-hisi.o/
+controller/pci-thunder-ecam.o/
+controller/pci-thunder-pem.o/
+controller/pci-xgene.o/
+/0              0           0     0     644     250976    `
+/10             0           0     0     644     183048    `
+/17             0           0     0     644     375176    `
+/26             0           0     0     644     146752    `
+/41             0           0     0     644     157936    `
+/51             0           0     0     644     716984    `
+/58             0           0     0     644     286624    `
+/72             0           0     0     644     172240    `
+/82             0           0     0     644     269856    `
+/95             0           0     0     644     148848    `
+/102            0           0     0     644     155968    `
+/115            0           0     0     644     139192    `
+/122            0           0     0     644     187600    `
+/129            0           0     0     644     336520    `
+/142            0           0     0     644     155472    `
+/148            0           0     0     644     127456    `
+/156            0           0     0     644     128168    `
+/169            0           0     0     644     240648    `
+/177            0           0     0     644     165112    `
+/185            0           0     0     644     192208    `
+/191            0           0     0     644     498112    `
+/201            0           0     0     644     284568    `
+/208            0           0     0     644     246728    `
+/219            0           0     0     644     1115624   `
+/241            0           0     0     644     174992    `
+/267            0           0     0     644     1008      `
+/295            0           0     0     644     1016      `
+/326            0           0     0     644     1008      `
+/356            0           0     0     644     1008      `

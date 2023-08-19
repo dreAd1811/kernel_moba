@@ -1,0 +1,146 @@
+!<thin>
+//                                              2120      `
+input.o/
+input-compat.o/
+input-mt.o/
+ff-core.o/
+event_notify.o/
+ff-memless.o/
+input-leds.o/
+evdev.o/
+keyboard/atkbd.o/
+keyboard/gpio_keys.o/
+joystick/xpad.o/
+tablet/acecad.o/
+tablet/aiptek.o/
+tablet/gtco.o/
+tablet/hanwang.o/
+tablet/kbtab.o/
+touchscreen/of_touchscreen.o/
+touchscreen/st/fts.o/
+touchscreen/st/fts_gui.o/
+touchscreen/st/fts_driver_test.o/
+touchscreen/st/fts_aoi_event.o/
+touchscreen/st/fts_lib/ftsCompensation.o/
+touchscreen/st/fts_lib/ftsCrossCompile.o/
+touchscreen/st/fts_lib/ftsError.o/
+touchscreen/st/fts_lib/ftsFrame.o/
+touchscreen/st/fts_lib/ftsIO.o/
+touchscreen/st/fts_lib/ftsTest.o/
+touchscreen/st/fts_lib/ftsTime.o/
+touchscreen/st/fts_lib/ftsTool.o/
+touchscreen/st/fts_lib/ftsFlash.o/
+touchscreen/st/fts_lib/ftsGesture.o/
+touchscreen/synaptics_dsx/synaptics_dsx_i2c.o/
+touchscreen/synaptics_dsx/synaptics_dsx_core.o/
+touchscreen/synaptics_dsx/synaptics_dsx_rmi_dev.o/
+touchscreen/synaptics_dsx/synaptics_dsx_fw_update.o/
+touchscreen/synaptics_dsx/synaptics_dsx_test_reporting.o/
+touchscreen/synaptics_dsx/synaptics_dsx_gesture.o/
+touchscreen/focaltech_touch/focaltech_core.o/
+touchscreen/focaltech_touch/focaltech_ex_fun.o/
+touchscreen/focaltech_touch/focaltech_ex_mode.o/
+touchscreen/focaltech_touch/focaltech_gesture.o/
+touchscreen/focaltech_touch/focaltech_esdcheck.o/
+touchscreen/focaltech_touch/focaltech_point_report_check.o/
+touchscreen/focaltech_touch/focaltech_i2c.o/
+touchscreen/focaltech_touch/focaltech_flash.o/
+touchscreen/focaltech_touch/focaltech_flash/focaltech_upgrade_ft3518.o/
+touchscreen/touch_gesture_inf.o/
+misc/qpnp-power-on.o/
+misc/qti-haptics.o/
+misc/uinput.o/
+misc/aw8697/aw8697.o/
+misc/aw8697/aw8697x.o/
+misc/aw8697/aw8697_cali.o/
+snt8100fsr/crc.o/
+snt8100fsr/customize.o/
+snt8100fsr/device.o/
+snt8100fsr/event.o/
+snt8100fsr/file.o/
+snt8100fsr/firmware.o/
+snt8100fsr/input_device.o/
+snt8100fsr/i2c_bus.o/
+snt8100fsr/spi_bus.o/
+snt8100fsr/serial_bus.o/
+snt8100fsr/irq.o/
+snt8100fsr/main.o/
+snt8100fsr/memory.o/
+snt8100fsr/sysfs.o/
+snt8100fsr/utils.o/
+snt8100fsr/workqueue.o/
+fingerprint/goodixfp/gf_spi.o/
+fingerprint/goodixfp/platform.o/
+fingerprint/goodixfp/netlink.o/
+/0              0           0     0     644     395216    `
+/9              0           0     0     644     108544    `
+/25             0           0     0     644     157456    `
+/37             0           0     0     644     150392    `
+/48             0           0     0     644     14208     `
+/64             0           0     0     644     164392    `
+/78             0           0     0     644     145280    `
+/92             0           0     0     644     363272    `
+/101            0           0     0     644     243016    `
+/119            0           0     0     644     231144    `
+/141            0           0     0     644     268448    `
+/158            0           0     0     644     170232    `
+/175            0           0     0     644     274160    `
+/192            0           0     0     644     186152    `
+/207            0           0     0     644     184720    `
+/225            0           0     0     644     167224    `
+/241            0           0     0     644     147040    `
+/271            0           0     0     644     459456    `
+/293            0           0     0     644     1000      `
+/319            0           0     0     644     250328    `
+/353            0           0     0     644     83104     `
+/385            0           0     0     644     55448     `
+/427            0           0     0     644     6080      `
+/469            0           0     0     644     213408    `
+/504            0           0     0     644     37640     `
+/539            0           0     0     644     232512    `
+/571            0           0     0     644     464456    `
+/605            0           0     0     644     10704     `
+/639            0           0     0     644     118768    `
+/673            0           0     0     644     246096    `
+/708            0           0     0     644     50632     `
+/745            0           0     0     644     216560    `
+/792            0           0     0     644     501944    `
+/840            0           0     0     644     251416    `
+/891            0           0     0     644     366928    `
+/944            0           0     0     644     540176    `
+/1002           0           0     0     644     359568    `
+/1053           0           0     0     644     290456    `
+/1099           0           0     0     644     231600    `
+/1147           0           0     0     644     183264    `
+/1196           0           0     0     644     182344    `
+/1245           0           0     0     644     1016      `
+/1295           0           0     0     644     1024      `
+/1355           0           0     0     644     167680    `
+/1400           0           0     0     644     254736    `
+/1447           0           0     0     644     15032     `
+/1519           0           0     0     644     149616    `
+/1552           0           0     0     644     444768    `
+/1574           0           0     0     644     384800    `
+/1594           0           0     0     644     257688    `
+/1609           0           0     0     644     693656    `
+/1631           0           0     0     644     628368    `
+/1654           0           0     0     644     118928    `
+/1681           0           0     0     644     11320     `
+/1699           0           0     0     644     193912    `
+/1723           0           0     0     644     174520    `
+/1744           0           0     0     644     290512    `
+/1764           0           0     0     644     143632    `
+/1783           0           0     0     644     190376    `
+/1806           0           0     0     644     152104    `
+/1833           0           0     0     644     199920    `
+/1855           0           0     0     644     194448    `
+/1877           0           0     0     644     163856    `
+/1902           0           0     0     644     10512     `
+/1920           0           0     0     644     147144    `
+/1939           0           0     0     644     22416     `
+/1960           0           0     0     644     279184    `
+/1980           0           0     0     644     192176    `
+/2000           0           0     0     644     14624     `
+/2024           0           0     0     644     232720    `
+/2055           0           0     0     644     140376    `
+/2088           0           0     0     644     300968    `

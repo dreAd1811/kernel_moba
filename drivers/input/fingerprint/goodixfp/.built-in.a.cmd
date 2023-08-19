@@ -1,0 +1,1 @@
+cmd_drivers/input/fingerprint/goodixfp/built-in.a :=  rm -f drivers/input/fingerprint/goodixfp/built-in.a; llvm-ar rcSTPD drivers/input/fingerprint/goodixfp/built-in.a drivers/input/fingerprint/goodixfp/gf_spi.o drivers/input/fingerprint/goodixfp/platform.o drivers/input/fingerprint/goodixfp/netlink.o

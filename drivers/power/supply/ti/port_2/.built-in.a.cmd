@@ -1,0 +1,1 @@
+cmd_drivers/power/supply/ti/port_2/built-in.a :=  rm -f drivers/power/supply/ti/port_2/built-in.a; llvm-ar rcSTPD drivers/power/supply/ti/port_2/built-in.a drivers/power/supply/ti/port_2/pd_policy_manager.o drivers/power/supply/ti/port_2/bq2597x_charger.o drivers/power/supply/ti/port_2/bq2589x_charger.o

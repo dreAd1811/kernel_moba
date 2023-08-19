@@ -1,0 +1,1 @@
+cmd_drivers/input/touchscreen/focaltech_touch/focaltech_flash/built-in.a :=  rm -f drivers/input/touchscreen/focaltech_touch/focaltech_flash/built-in.a; llvm-ar rcSTPD drivers/input/touchscreen/focaltech_touch/focaltech_flash/built-in.a drivers/input/touchscreen/focaltech_touch/focaltech_flash/focaltech_upgrade_ft3518.o

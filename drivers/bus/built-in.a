@@ -1,0 +1,24 @@
+!<thin>
+//                                              254       `
+qcom-ebi2.o/
+mhi/core/mhi_init.o/
+mhi/core/mhi_main.o/
+mhi/core/mhi_pm.o/
+mhi/core/mhi_boot.o/
+mhi/core/mhi_dtr.o/
+mhi/controllers/mhi_qcom.o/
+mhi/controllers/mhi_arch_qcom.o/
+mhi/devices/mhi_netdev.o/
+mhi/devices/mhi_uci.o/
+mhi/devices/mhi_satellite.o/
+/0              0           0     0     644     106016    `
+/13             0           0     0     644     420832    `
+/34             0           0     0     644     402792    `
+/55             0           0     0     644     326424    `
+/74             0           0     0     644     231688    `
+/95             0           0     0     644     180032    `
+/115            0           0     0     644     279632    `
+/143            0           0     0     644     281688    `
+/176            0           0     0     644     382176    `
+/202            0           0     0     644     201632    `
+/225            0           0     0     644     230160    `

@@ -1,0 +1,17 @@
+!<thin>
+//                                              124       `
+led-core.o/
+led-class.o/
+led-triggers.o/
+leds-qti-tri-led.o/
+leds-qpnp-flash-v2.o/
+leds-aw9106.o/
+trigger/ledtrig-timer.o/
+
+/0              0           0     0     644     126912    `
+/12             0           0     0     644     114288    `
+/25             0           0     0     644     116312    `
+/41             0           0     0     644     133568    `
+/61             0           0     0     644     436056    `
+/83             0           0     0     644     271024    `
+/98             0           0     0     644     86152     `

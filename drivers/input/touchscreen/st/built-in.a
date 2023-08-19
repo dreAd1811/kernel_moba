@@ -1,0 +1,30 @@
+!<thin>
+//                                              264       `
+fts.o/
+fts_gui.o/
+fts_driver_test.o/
+fts_aoi_event.o/
+fts_lib/ftsCompensation.o/
+fts_lib/ftsCrossCompile.o/
+fts_lib/ftsError.o/
+fts_lib/ftsFrame.o/
+fts_lib/ftsIO.o/
+fts_lib/ftsTest.o/
+fts_lib/ftsTime.o/
+fts_lib/ftsTool.o/
+fts_lib/ftsFlash.o/
+fts_lib/ftsGesture.o/
+/0              0           0     0     644     459456    `
+/7              0           0     0     644     1000      `
+/18             0           0     0     644     250328    `
+/37             0           0     0     644     83104     `
+/54             0           0     0     644     55448     `
+/81             0           0     0     644     6080      `
+/108            0           0     0     644     213408    `
+/128            0           0     0     644     37640     `
+/148            0           0     0     644     232512    `
+/165            0           0     0     644     464456    `
+/184            0           0     0     644     10704     `
+/203            0           0     0     644     118768    `
+/222            0           0     0     644     246096    `
+/242            0           0     0     644     50632     `

@@ -1282,7 +1282,7 @@ endif
 ifneq "$(LD)" "aarch64-linux-gnu-ld"
 include/config/auto.conf: FORCE
 endif
-ifneq "$(CLANG_FLAGS)" "--target=aarch64-linux-gnu --prefix=/home/dread/toolchains/proton-clang/bin/ --gcc-toolchain=/home/dread/toolchains/proton-clang -no-integrated-as -Werror=unknown-warning-option"
+ifneq "$(CLANG_FLAGS)" "--target=aarch64-linux-gnu --prefix=/home/dread/toolchains/proton-clang/bin/aarch64-linux-gnu- --gcc-toolchain=/home/dread/toolchains/proton-clang -no-integrated-as -Werror=unknown-warning-option"
 include/config/auto.conf: FORCE
 endif
 ifneq "$(SRCARCH)" "arm64"

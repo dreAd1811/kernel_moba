@@ -1,0 +1,1 @@
+cmd_drivers/media/platform/msm/synx/built-in.a :=  rm -f drivers/media/platform/msm/synx/built-in.a; llvm-ar rcSTPD drivers/media/platform/msm/synx/built-in.a drivers/media/platform/msm/synx/synx.o drivers/media/platform/msm/synx/synx_util.o drivers/media/platform/msm/synx/synx_debugfs.o

@@ -1,0 +1,10 @@
+!<thin>
+//                                              72        `
+pinctrl-msm.o/
+pinctrl-spmi-gpio.o/
+pinctrl-spmi-mpp.o/
+pinctrl-kona.o/
+/0              0           0     0     644     273672    `
+/15             0           0     0     644     233608    `
+/36             0           0     0     644     223152    `
+/56             0           0     0     644     265504    `

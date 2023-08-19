@@ -1,0 +1,1 @@
+cmd_drivers/vservices/protocol/block/built-in.a :=  rm -f drivers/vservices/protocol/block/built-in.a; llvm-ar rcSTPD drivers/vservices/protocol/block/built-in.a drivers/vservices/protocol/block/server.o drivers/vservices/protocol/block/client.o

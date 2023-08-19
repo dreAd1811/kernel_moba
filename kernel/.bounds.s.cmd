@@ -1,4 +1,4 @@
-cmd_kernel/bounds.s := clang -Wp,-MD,kernel/.bounds.s.d -nostdinc -isystem /home/dread/toolchains/proton-clang/lib/clang/13.0.0/include -I./arch/arm64/include -I./arch/arm64/include/generated  -I./include -I./arch/arm64/include/uapi -I./arch/arm64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -std=gnu89 --target=aarch64-linux-gnu --prefix=/home/dread/toolchains/proton-clang/bin/ --gcc-toolchain=/home/dread/toolchains/proton-clang -no-integrated-as -Werror=unknown-warning-option -mno-implicit-float -DCONFIG_BROKEN_GAS_INST=1 -fno-asynchronous-unwind-tables -O2 -fstack-protector-strong --target=aarch64-linux-gnu --gcc-toolchain=/home/dread/toolchains/proton-clang -meabi gnu -Wno-asm-operand-widths -Wno-initializer-overrides -fno-omit-frame-pointer -fno-optimize-sibling-calls -g -pg    -DKBUILD_BASENAME='"bounds"' -DKBUILD_MODNAME='"bounds"'  -fverbose-asm -S -o kernel/bounds.s kernel/bounds.c
+cmd_kernel/bounds.s := clang -Wp,-MD,kernel/.bounds.s.d -nostdinc -isystem /home/dread/toolchains/proton-clang/lib/clang/13.0.0/include -I./arch/arm64/include -I./arch/arm64/include/generated  -I./include -I./arch/arm64/include/uapi -I./arch/arm64/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -include ./include/linux/compiler_types.h -D__KERNEL__ -mlittle-endian -Qunused-arguments -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -Werror-implicit-function-declaration -Wno-format-security -std=gnu89 --target=aarch64-linux-gnu --prefix=/home/dread/toolchains/proton-clang/bin/aarch64-linux-gnu- --gcc-toolchain=/home/dread/toolchains/proton-clang -no-integrated-as -Werror=unknown-warning-option -fno-PIE -mno-implicit-float -DCONFIG_AS_LSE=1 -fno-asynchronous-unwind-tables -Wno-psabi -fno-delete-null-pointer-checks -Wno-frame-address -Wno-int-in-bool-context -Wno-address-of-packed-member -O2 -Wframe-larger-than=2048 -fstack-protector-strong --target=aarch64-linux-gnu --gcc-toolchain=/home/dread/toolchains/proton-clang -meabi gnu -Wno-format-invalid-specifier -Wno-gnu -Wno-duplicate-decl-specifier -Wno-asm-operand-widths -Wno-initializer-overrides -Wno-tautological-constant-out-of-range-compare -Wno-tautological-compare -mno-global-merge -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -Wvla -g -pg -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-overflow -fno-merge-all-constants -fno-stack-check -Werror=implicit-int -Werror=strict-prototypes -Werror=date-time -Werror=incompatible-pointer-types -fmacro-prefix-map=./= -Wno-initializer-overrides -Wno-unused-value -Wno-format -Wno-sign-compare -Wno-format-zero-length -Wno-uninitialized    -DKBUILD_BASENAME='"bounds"' -DKBUILD_MODNAME='"bounds"'  -fverbose-asm -S -o kernel/bounds.s kernel/bounds.c
 
 source_kernel/bounds.s := kernel/bounds.c
 
@@ -108,7 +108,14 @@ deps_kernel/bounds.s := \
     $(wildcard include/config/arm64/lse/atomics.h) \
     $(wildcard include/config/as/lse.h) \
   arch/arm64/include/asm/lse.h \
-  arch/arm64/include/asm/atomic_ll_sc.h \
+  arch/arm64/include/asm/alternative.h \
+    $(wildcard include/config/arm64/uao.h) \
+  arch/arm64/include/asm/cpucaps.h \
+  arch/arm64/include/asm/insn.h \
+  include/linux/init.h \
+    $(wildcard include/config/strict/kernel/rwx.h) \
+    $(wildcard include/config/strict/module/rwx.h) \
+  arch/arm64/include/asm/atomic_lse.h \
   arch/arm64/include/asm/cmpxchg.h \
   include/linux/build_bug.h \
   include/asm-generic/atomic-long.h \
@@ -136,9 +143,6 @@ deps_kernel/bounds.s := \
     $(wildcard include/config/printk/nmi.h) \
     $(wildcard include/config/printk.h) \
     $(wildcard include/config/dynamic/debug.h) \
-  include/linux/init.h \
-    $(wildcard include/config/strict/kernel/rwx.h) \
-    $(wildcard include/config/strict/module/rwx.h) \
   include/linux/kern_levels.h \
   include/linux/cache.h \
     $(wildcard include/config/arch/has/cache/line/size.h) \

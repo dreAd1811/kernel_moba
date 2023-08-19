@@ -1,0 +1,1 @@
+cmd_techpack/built-in.a :=  rm -f techpack/built-in.a; llvm-ar rcSTPD techpack/built-in.a techpack/stub/built-in.a techpack/camera/built-in.a techpack/display/built-in.a techpack/audio/built-in.a techpack/video/built-in.a

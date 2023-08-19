@@ -1,0 +1,14 @@
+!<thin>
+//                                              96        `
+core/server.o/
+core/client.o/
+block/server.o/
+block/client.o/
+serial/client.o/
+serial/server.o/
+/0              0           0     0     644     190744    `
+/15             0           0     0     644     162480    `
+/30             0           0     0     644     217152    `
+/46             0           0     0     644     181024    `
+/62             0           0     0     644     157880    `
+/79             0           0     0     644     186136    `

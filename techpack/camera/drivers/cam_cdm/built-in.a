@@ -1,0 +1,15 @@
+!<thin>
+//                                              114       `
+cam_cdm_soc.o/
+cam_cdm_util.o/
+cam_cdm_intf.o/
+cam_cdm_core_common.o/
+cam_cdm_virtual_core.o/
+cam_cdm_hw_core.o/
+
+/0              0           0     0     644     170240    `
+/15             0           0     0     644     51304     `
+/31             0           0     0     644     201536    `
+/47             0           0     0     644     198200    `
+/70             0           0     0     644     188608    `
+/94             0           0     0     644     294984    `

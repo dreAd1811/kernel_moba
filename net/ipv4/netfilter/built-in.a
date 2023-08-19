@@ -1,0 +1,53 @@
+!<thin>
+//                                              428       `
+nf_nat_l3proto_ipv4.o/
+nf_nat_proto_icmp.o/
+nf_nat_masquerade_ipv4.o/
+nf_defrag_ipv4.o/
+nf_socket_ipv4.o/
+nf_tproxy_ipv4.o/
+nf_log_ipv4.o/
+nf_reject_ipv4.o/
+nf_nat_h323.o/
+nf_nat_pptp.o/
+nf_nat_proto_gre.o/
+ip_tables.o/
+iptable_filter.o/
+iptable_mangle.o/
+iptable_nat.o/
+iptable_raw.o/
+iptable_security.o/
+ipt_ah.o/
+ipt_rpfilter.o/
+ipt_MASQUERADE.o/
+ipt_REJECT.o/
+arp_tables.o/
+arpt_mangle.o/
+arptable_filter.o/
+nf_dup_ipv4.o/
+
+/0              0           0     0     644     367552    `
+/23             0           0     0     644     320048    `
+/44             0           0     0     644     340896    `
+/70             0           0     0     644     342752    `
+/88             0           0     0     644     338696    `
+/106            0           0     0     644     338248    `
+/124            0           0     0     644     340624    `
+/139            0           0     0     644     336136    `
+/157            0           0     0     644     393096    `
+/172            0           0     0     644     351704    `
+/187            0           0     0     644     325328    `
+/207            0           0     0     644     504232    `
+/220            0           0     0     644     321056    `
+/238            0           0     0     644     318864    `
+/256            0           0     0     644     321400    `
+/271            0           0     0     644     316816    `
+/286            0           0     0     644     314712    `
+/306            0           0     0     644     250568    `
+/316            0           0     0     644     326344    `
+/332            0           0     0     644     322760    `
+/350            0           0     0     644     317120    `
+/364            0           0     0     644     475768    `
+/378            0           0     0     644     306312    `
+/393            0           0     0     644     249960    `
+/412            0           0     0     644     328928    `

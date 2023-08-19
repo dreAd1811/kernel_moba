@@ -1,0 +1,12 @@
+!<thin>
+//                                              104       `
+cam_ife_csid_dev.o/
+cam_ife_csid_soc.o/
+cam_ife_csid_core.o/
+cam_ife_csid17x.o/
+cam_ife_csid_lite17x.o/
+/0              0           0     0     644     157160    `
+/20             0           0     0     644     147528    `
+/40             0           0     0     644     385056    `
+/61             0           0     0     644     166440    `
+/80             0           0     0     644     155904    `

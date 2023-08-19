@@ -1,0 +1,11 @@
+kernel/drivers/video/backlight/lcd.ko
+kernel/drivers/soc/qcom/llcc_perfmon.ko
+kernel/drivers/char/rdbg.ko
+kernel/drivers/misc/wigig_sensing.ko
+kernel/drivers/net/wireless/ath/wil6210/wil6210.ko
+kernel/drivers/media/platform/msm/dvb/adapter/mpq-adapter.ko
+kernel/drivers/media/platform/msm/dvb/demux/mpq-dmx-hw-plugin.ko
+kernel/drivers/media/platform/msm/dvb/adapter/mpq-adapter.ko
+kernel/drivers/media/platform/msm/dvb/demux/mpq-dmx-hw-plugin.ko
+kernel/drivers/media/usb/gspca/gspca_main.ko
+kernel/drivers/platform/msm/msm_11ad/msm_11ad_proxy.ko

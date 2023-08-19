@@ -1,0 +1,1 @@
+cmd_drivers/media/platform/msm/built-in.a :=  rm -f drivers/media/platform/msm/built-in.a; llvm-ar rcSTPD drivers/media/platform/msm/built-in.a drivers/media/platform/msm/cvp/built-in.a drivers/media/platform/msm/npu/built-in.a drivers/media/platform/msm/synx/built-in.a

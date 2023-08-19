@@ -1,0 +1,9 @@
+!<thin>
+//                                              80        `
+cam_custom_sub_mod_soc.o/
+cam_custom_sub_mod_dev.o/
+cam_custom_sub_mod_core.o/
+
+/0              0           0     0     644     142832    `
+/26             0           0     0     644     153112    `
+/52             0           0     0     644     153136    `

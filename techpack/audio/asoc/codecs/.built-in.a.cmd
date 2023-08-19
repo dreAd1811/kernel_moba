@@ -1,0 +1,1 @@
+cmd_techpack/audio/asoc/codecs/built-in.a :=  rm -f techpack/audio/asoc/codecs/built-in.a; llvm-ar rcSTPD techpack/audio/asoc/codecs/built-in.a techpack/audio/asoc/codecs/wcd934x/built-in.a techpack/audio/asoc/codecs/sdm660_cdc/built-in.a techpack/audio/asoc/codecs/msm_sdw/built-in.a techpack/audio/asoc/codecs/wcd9360/built-in.a techpack/audio/asoc/codecs/wcd937x/built-in.a

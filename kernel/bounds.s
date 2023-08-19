@@ -1,5 +1,9 @@
 	.text
 	.file	"bounds.c"
+                                        // Start of file scope inline assembly
+.arch_extension	lse
+
+                                        // End of file scope inline assembly
 	.globl	main                            // -- Begin function main
 	.p2align	2
 	.type	main,@function
